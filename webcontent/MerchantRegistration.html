@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<title>Merchant Registration</title>
+
+<script src="angular.js"></script>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+
+	$scope.merchantName ="";
+        $scope.conversionRate ="";
+	$scope.bonus ="";
+$scope.content="";
+
+   $scope.reset = function() {
+	$scope.merchantName ="";
+        $scope.conversionRate ="";
+        $scope.bonus ="";
+	
+    };
+
+
+ $scope.submitForm = function() {
+
+var registerMerchant= {
+"jsonrpc": "2.0",
+"method": "invoke",
+"params": {
+"type": 1,
+"chaincodeID": {
+"name":
+"53bedae54a424698c1bbf7370eba06a961b2f3d6d6fe0439ad4c8d49a951c27d0b4ce629fe95cffd6e55385c3fac033955e9591506b35af041ac33d3ca7341d5"
+},
+"ctorMsg": {
+"function": "invoke",
+"args": [
+				"InitMerchant", "'+ $scope.merchantName +'", "'+ $scope.conversionRate +'", "'+ $scope.bonus +'"
+			]
+},
+"secureContext": "test_user0"
+},
+"id": 1
+}
+;
+
+alert(JSON.stringify(registerMerchant));
+
+ JSON.stringify(registerMerchant);
+
+$http.post("http://192.168.99.101:7050/chaincode",registerMerchant ) .then(function(response) {
+        //First function handles success
+        $scope.content ="Merchant regestered successfully"
+    }, function(response) {
+        //Second function handles error
+        $scope.content = "Something went wrong";
+    });
+	
+
+   };
+   
+
+
+});
+</script>
+
+
+<body>
+ <a href="MerchantRegistration.html"> Merchant Registration</a>   &nbsp; &nbsp;
+ <a href="ClientRegistration.html"> Client Registration</a> &nbsp; &nbsp;
+ <a href="transaction.html"> Transaction</a>   &nbsp; &nbsp;
+ <a href="CustomerPoints.html"> Customer Points</a>   &nbsp; &nbsp;
+<br/><br/>
+
+
+
+<div> <h1>Merchant Registration </h1></div>
+<div ng-app="myApp" ng-controller="myCtrl">
+
+{{$scope.content}}
+
+Merchant name:
+<select ng-model="merchantName">
+  
+    <option value="KMart">KMart
+    <option value="SmartCafe">SmartCafe
+   
+</select><br/><br/>
+Conversion rate: <input type="text"  ng-model="conversionRate"><br/><br/>
+Bonus : <input type="text"  ng-model="bonus"><br/><br/>
+<br/><br/>
+<button ng-click="reset()">Reset</button>
+<button ng-click= "submitForm()"> Register</button>
+
+</div>
+
+
+</body>
+</html>

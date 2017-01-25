@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<title>Registration</title>
+<script src="angular.js"></script>
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+
+	$scope.firstName ="";
+        $scope.lastName ="";
+	$scope.customerId ="";
+	$scope.merchant = false;
+
+   $scope.reset = function() {
+	$scope.firstName ="";
+        $scope.lastName ="";
+	$scope.customerId ="";
+	$scope.merchant1 = false;
+	$scope.merchant2 = false;
+	
+    };
+
+
+  $scope.submitForm = function() {
+alert("dsds");
+	alert($scope.firstName);
+        alert($scope.lastName);
+	alert($scope.customerId);
+//	$scope.merchant1 = false;
+//	$scope.merchant2 = false;
+	
+
+    };
+   
+
+
+});
+</script>
+
+<body>
+ <a href="MerchantRegistration.html"> Merchant Registration</a>   &nbsp; &nbsp;
+ <a href="ClientRegistration.html"> Client Registration</a> &nbsp; &nbsp;
+ <a href="transaction.html"> Transaction</a>   &nbsp; &nbsp;
+ <a href="CustomerPoints.html"> Customer Points</a>   &nbsp; &nbsp;
+<br/><br/>
+
+
+<div> <h1>Client Registration Page </h1></div>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+First name:<input type="text"  ng-model="firstName"><br/><br/>
+Last name:<input type="text"  ng-model="lastName"><br/><br/>
+mobile No.:<input type="text"  ng-model="customerId"><br/><br/>
+Merchant Name: 
+<input type="checkbox" ng-model="merchant1" ng-checked="merchant1">KMart &nbsp; &nbsp;
+<input type="checkbox" ng-model="merchant2" ng-checked="merchant2">SmartCafe<br>
+
+<br/><br/>
+<button ng-click="reset()">Reset</button>
+<button ng-click= "submitForm()"> Register</button>
+
+</div>
+
+
+</body>
+</html>

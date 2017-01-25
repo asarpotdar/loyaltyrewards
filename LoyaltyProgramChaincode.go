@@ -70,9 +70,9 @@ func (t *LoyaltyProgramChaincode) Invoke(stub shim.ChaincodeStubInterface, funct
 	if function == "performTransaction" {
 		return t.performTransaction(stub, args)
 	}
-	if function == "transferPoints" {
+	/*if function == "transferPoints" {
 		return t.transferPoints(stub, args)
-	}
+	}  */
 
 	return nil, nil
 }
@@ -90,10 +90,16 @@ func (t *LoyaltyProgramChaincode) registerMerchant(stub shim.ChaincodeStubInterf
   MerchantDataList = append(MerchantDataList, MerchantDataObj)
 	jsonAsBytes, _ := json.Marshal(MerchantDataList)
 	err = stub.PutState(stateMerchant, jsonAsBytes)
+
+//testing wht is in ledger
+	merchantTxnAsBytes, err := stub.GetState(stateMerchant)
+
+//	fmt.Printf("In register merchant method" + merchantTxnAsBytes)
+
 	if err != nil {
 		return nil, err
 	}
-	return nil, nil
+	return merchantTxnAsBytes, nil
 }
 
 func (t *LoyaltyProgramChaincode) registerCustomer(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
@@ -187,13 +193,48 @@ func (t *LoyaltyProgramChaincode) saveLoyalty(stub shim.ChaincodeStubInterface, 
 }
 
 //transfer points based on UPS
+/*
 func (t *LoyaltyProgramChaincode) transferPoints(stub shim.ChaincodeStubInterface, args []string) ([]byte, error) {
 
-//	mobile_no_user_1 := args[0]
-	//mobile_no_user_2 := args[1]
 
+	var CustomerTxnDataObj1 CustomerMerchantData
+	var CustomerTxnDataObj2 CustomerMerchantData
+
+	mobile_no_user_1 := args[0]
+	mobile_no_user_2 := args[1]
+	transfer_points := args[2]
+	source_merchant := args[3]
+	dest_merchant := args[4]
+
+  str1 := `{"CUSTOMER_ID": "` + mobile_no_user_1 + `", "MERCHANT_ID": "` + source_merchant + `"}`
+	res1, err = t.GetLoyaltyPoints(stub shim.ChaincodeStubInterface, str1 rgs []string)
+	json.Unmarshal(res1, &CustomerTxnDataObj1)
+
+	str2 := `{"CUSTOMER_ID": "` + mobile_no_user_2 + `", "MERCHANT_ID": "` + dest_merchant + `"}`
+	res2, err = t.GetLoyaltyPoints(stub shim.ChaincodeStubInterface, str2 rgs []string)
+	json.Unmarshal(res1, &CustomerTxnDataObj2)
+
+  CustomerTxnDataObj1.POINTS = strconv.Itoa(CustomerTxnDataObj1.POINTS - transfer_points)
+	jsonAsBytes1, _ := json.Marshal(CustomerTxnDataObj1)
+  err1 = stub.PutState(stateCustomer, jsonAsBytes)
+
+	if err1 != nil {
+		return nil, err1
+	}
+
+  KMT_UPS_RT := 0.10
+	SMC_UPS_RT := 0.15
+	if (source_merchant == "KMT" && dest_merchant == "SMC"){
+		transfer_points = transfer_points + ((transfer_points * KMT_UPS_RT)/SMC_UPS_RT)
+		CustomerTxnDataObj2.POINTS = strconv.Itoa(CustomerTxnDataObj2.POINTS + transfer_points)
+	}
+
+
+	jsonAsBytes2, _ := json.Marshal(CustomerTxnDataObj2)
+	err2 = stub.PutState(stateCustomer, jsonAsBytes)
 	return nil, nil
 }
+*/
 
 // Query callback representing the query of a chaincode
 func (t *LoyaltyProgramChaincode) Query(stub shim.ChaincodeStubInterface, function string, args []string) ([]byte, error) {
@@ -234,6 +275,7 @@ func (t *LoyaltyProgramChaincode) GetLoyaltyPoints(stub shim.ChaincodeStubInterf
 		return res, nil
 
 }
+
 
 func main() {
 	err := shim.Start(new(LoyaltyProgramChaincode))

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<title>Transaction detail</title>
+
+<script src="angular.js"></script>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope,$http) {
+
+	$scope.tranAmount ="";
+        $scope.merchantName ="";
+
+
+   $scope.reset = function() {
+	$scope.tranAmount ="";
+        $scope.merchantName ="";
+	$scope.customerId = "";
+    };
+
+
+ $scope.submitForm = function() {
+//alert("dsds");
+	alert($scope.tranAmount);
+	alert($scope.merchantName);
+       alert($scope.customerId);
+//	$scope.merchant = false;
+//	$scope.merchant = false;
+	
+
+   };
+   
+
+
+});
+</script>
+
+
+<body>
+ <a href="MerchantRegistration.html"> Merchant Registration</a>   &nbsp; &nbsp;
+ <a href="ClientRegistration.html"> Client Registration</a> &nbsp; &nbsp;
+ <a href="transaction.html"> Transaction</a>   &nbsp; &nbsp;
+ <a href="CustomerPoints.html"> Customer Points</a>   &nbsp; &nbsp;
+<br/><br/>
+
+
+<div> <h1>Merchant Transaction </h1></div>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+
+Transaction Amount: <input type="text"  ng-model="tranAmount"><br/><br/>
+Customer Id: <input type="text"  ng-model="customerId"><br/><br/>
+Merchant name:
+<select ng-model="merchantName">
+  
+    <option value="KMart">KMart
+    <option value="SmartCafe">SmartCafe
+   
+</select>
+
+<br/><br/>
+
+<button ng-click= "submitForm()"> Submit</button>
+<button ng-click="reset()">Reset</button>
+</div>
+
+
+</body>
+</html>
